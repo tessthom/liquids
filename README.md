@@ -1,3 +1,6 @@
 # Liquids
 
-## A social media app for sharing tasty beverage recipes and reviews
+## A social media app for sharing tasty beverage recipes and reviews.
+
+### Built with:
+
