@@ -4,9 +4,10 @@ import dotenv from 'dotenv';
 
 // Local modules
 import connectDB from './config/database.js';
-// import userRoutes from './routes/userRoutes.js';
+import userRoutes from './routes/userRoutes.js';
 import postRoutes from './routes/postRoutes.js';
-// import commentRoutes from './routes/commentRoutes.js';
+import groupRoutes from './routes/groupRoutes.js';
+import commentRoutes from './routes/commentRoutes.js';
 
 // Init env variabless
 dotenv.config();
@@ -22,9 +23,11 @@ app.use((req, res, next) => { // Custom middlware to log all requests coming in
 });
 
 // Bind routes
-// app.use('/api/users', userRoutes);
+// TODO: auth routes
+app.use('/api/users', userRoutes);
 app.use('/api/posts', postRoutes);
-// app.use('/api/posts/:postId/comments', commentRoutes);
+app.use('/api/groups', groupRoutes);
+app.use('/api/posts/:postId/comments', commentRoutes);
 
 // Init DB connection and only listen on success
 const start = async () => {
