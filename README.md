@@ -12,7 +12,7 @@
 
 ## Tech Stack
 - **Frontend**: React (using Vite for faster builds, a streamlined dev experience, and compatibility with Open Props).
-- **Backend**: Express and Node.js, with MongoDB database for current version (a practical choice for ease of setup, as I'm currently focused more on frontend skills. A subsequent version would use PostgreSQL because this data is relational).
+- **Backend**: Express and Node.js, with MongoDB database for current version (a practical choice for ease of setup, as I'm currently focused more on frontend skills. A subsequent version would use PostgreSQL because this data is relational). Mongoose for ODM.
 - **Authentication**: JWT (JSON Web Tokens) for stateless session management.
 - **Styling**: [Open Props](https://open-props.style/) for highly customizable global styles, with CSS Modules for scoped, reusable styling.
 - **API Testing**: [Postman](https://www.postman.com/) for easy API testing.
