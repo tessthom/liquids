@@ -22,14 +22,24 @@ const { Schema } = mongoose;
  * - createdAt (Date)
  */
 
+const voteSchema = new Schema({
+  userId: { type: Schema.Types.ObjectId, ref: 'User', required: true },
+  direction: { type: String, enum: ['upvote', 'downvote'] }
+});
+
+const commentSchema = new Schema({
+  userId: { type: Schema.Types.ObjectId, ref: 'User', required: true },
+  content: { type: String, required: true },
+  createdAt: { type: Date, default: Date.now }
+});
+
 const postSchema = new Schema({
-  userId: { type: mongoose.Schema.Types.ObjectId, ref: 'User' },
-  groupId: { type: mongoose.Schema.Types.ObjectId, ref: 'Group' },
+  userId: { type: Schema.Types.ObjectId, ref: 'User' },
+  groupId: { type: Schema.Types.ObjectId, ref: 'Group' },
   // Wrapper fields for easier destructuring in FE/organization
   content: {
     title: { 
       type: String, 
-      required: true,
       maxlength: 80
     },
     description: { type: String },
@@ -42,16 +52,37 @@ const postSchema = new Schema({
     }],
     instructions: { type: [String], maxlength: 200 }
   },
+  votes: [voteSchema],
+  comments: [commentSchema]
 
-  interactions: {
-    likes: { type: Number, default: 0 },
-    dislikes: { type: Number, default: 0 },
-    comments: [{
-      type: mongoose.Schema.Types.ObjectId,
-      ref: 'Comment'
-    }]
-  },
 }, { timestamps: true });
+
+// Instance method to get vote counts
+postSchema.methods.getVoteCounts = function () {
+  const upvotes = this.votes.filter(vote => vote.direction === 'upvote').length;
+  const downvotes = this.votes.filter(vote => vote.direction === 'downvote').length;
+
+  return { upvotes, downvotes };
+}
+
+// Instance method to handle voting
+postSchema.methods.updateVote = function (userId, voteType) {
+  const existingVoteIndex = this.votes.findIndex(vote => vote.userId.toString() === userId); // returns index of existing vote or -1 if none found
+
+  // If user has already voted on this post...
+  if (existingVoteIndex !== -1) {
+    // Case 1: If same vote type (ie `direction`), user is de-selecting it
+    if (this.votes[existingVoteIndex].direction === voteType) {
+      this.votes.splice(existingVoteIndex, 1); // Remove the existing vote
+    } else {
+      // Case 2: If different vote type/direction, update the existing vote
+      this.votes[existingVoteIndex].direction = voteType;
+    }
+  } else {
+    // Case 3: User is voting on this post for the first time, so add a vote
+    this.votes.push({ userId, direction: voteType });
+  }
+};
 
 // Compile Schema into a Model and export
 export default mongoose.model('Post', postSchema);

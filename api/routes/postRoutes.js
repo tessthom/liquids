@@ -1,56 +1,40 @@
 import express from 'express';
+// import { authenticateUser } from '../middleware/authMiddleware.js';
+import * as postController from '../controllers/postController.js';
 
 const router = express.Router();
 
 // All routes relative to '/api/posts'
 
 // Get all posts
-router.get('/', (req, res) => {
-  res.json({ msg: 'GET all posts' });
-});
+router.get('/', postController.getPosts);
 
 // Create a new post
-router.post('/', (req, res) => {
-  res.json({ msg: 'Create a new post' });
-});
+// With auth middleware would be router.post('/', authenticateUser, postController.createPost);
+router.post('/', postController.createPost);
 
 // Get one post by post ID
-router.get('/:id', (req, res) => {
-  res.json({ msg: 'GET one post' });
-});
+router.get('/:postId', postController.getPostById);
 
 // Update a post
-router.patch('/:id', (req, res) => {
-  res.json({ msg: 'Update a post' });
-});
+router.patch('/:postId', postController.updatePost);
 
 // Delete a post
-router.delete('/:id', (req, res) => {
-  res.json({ msg: 'Delete a post' });
-});
+router.delete('/:postId', postController.deletePost);
 
-// Get likes, dislikes, comment totals for a post
-router.get('/:id/stats', (req, res) => {
-  res.json({ msg: 'Get stats for a post' });
-});
+// Get upvotes, downvotes, comments array for a post
+router.get('/:postId/interactions', postController.getInteractionsById);
 
-// Like a post
-router.patch('/:id/like', (req, res) => {
-  res.json({ msg: 'Like a post' });
-});
-
-// Dislike a post
-router.patch('/:id/dislike', (req, res) => {
-  res.json({ msg: 'Dislike a post' });
-});
+// Vote on a post
+router.patch('/:postId/vote', postController.vote);
 
 // Favorite a post
-router.patch('/:id/favorite', (req, res) => {
+router.patch('/:postId/favorite', (req, res) => {
   res.json({ msg: 'Favorite a post' });
 });
 
 // Unfavorite a post
-router.patch('/:id/unfavorite', (req, res) => {
+router.patch('/:postId/unfavorite', (req, res) => {
   res.json({ msg: 'Unfavorite a post' });
 });
 

@@ -5,9 +5,25 @@ const router = express.Router();
 // All routes relative to '/api/users'
 
 // TODO: Write + import all userController methods req'd
+
 // Get all users
 router.get('/', (req, res) => {
   res.json({ msg: 'Get all users' });
+});
+
+// Create new user
+router.post('/register', (req, res) => {
+  res.json({ msg: 'Register new user' });
+});
+
+// Login a user
+router.post('/login', (req, res) => {
+  res.json({ msg: 'Log in user' });
+});
+
+// Logout a user
+router.post('/logout', (req, res) => {
+  res.json({ msg: 'Log out user' });
 });
 
 // Get one user
