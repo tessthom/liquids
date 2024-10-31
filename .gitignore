@@ -3,6 +3,12 @@ node_modules/
 npm-debug.log
 package-lock.json
 
+# ESLint cache
+.eslintcache
+
+# Prettier cache
+.prettierignore
+
 # Environment variables
 .env
 
