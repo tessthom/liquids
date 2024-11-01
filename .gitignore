@@ -22,3 +22,6 @@ dist/
 # Logs
 logs
 *.log
+
+# Settings
+.vscode
