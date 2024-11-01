@@ -16,8 +16,7 @@ const { Schema } = mongoose;
  *    - amount: (Number)
  *    - unit: (String)
  * - instructions (Array of strings)
- * - likes (Number)
- * - dislikes (Number)
+ * - votes (Array of { userId, direction: 'upvote' || 'downvote' } )
  * - comments (Array of Comment IDs)
  * - createdAt (Date)
  */
@@ -53,8 +52,8 @@ const postSchema = new Schema({
     instructions: { type: [String], maxlength: 200 }
   },
   votes: [voteSchema],
-  comments: [commentSchema]
-
+  comments: [commentSchema],
+  favorites: [{ type: Schema.Types.ObjectId, ref: 'User' }]
 }, { timestamps: true });
 
 // Instance method to get vote counts
@@ -83,6 +82,23 @@ postSchema.methods.updateVote = function (userId, voteType) {
     this.votes.push({ userId, direction: voteType });
   }
 };
+
+postSchema.methods.toggleFavorite = function (userId) {
+  const existingFavorite = this.favorites.find(fave => fave.userId === userId);
+  // Case 1: If user has already favorited this post, user is de-selecting so remove their userId from the array
+  if (existingFavorite) {
+    this.favorites.splice(this.favorites.indexOf(userId), 1);
+    console.log(this.favorites, userId);
+  } else {
+    // Case 2: Else add userId to favorites
+    this.favorites.push(userId);
+    console.log(this.favorites, userId);
+  }
+}
+
+postSchema.methods.getFavoriteCount = function () {
+  return this.favorites.length;
+}
 
 // Compile Schema into a Model and export
 export default mongoose.model('Post', postSchema);

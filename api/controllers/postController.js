@@ -121,9 +121,11 @@ export const vote = async (req, res) => {
 
     // Call instance method to update votes
     post.updateVote(userId, voteType);
+    
 
     // Get updated votes
     const voteCounts = post.getVoteCounts();
+    console.log(voteCounts);
 
     // Save updated post to DB
     await post.save();
@@ -135,6 +137,27 @@ export const vote = async (req, res) => {
 }
 
 // Favorite a post
+export const favorite = async (req, res) => {
+  const { postId } = req.params;
+  // const userId = req.user.id; // retrieved from the JWT in auth middleware
+  const userId = '603d7eec32f38b0b8f8f8d63'; // TODO: temp hard coded val to test in Postman til auth implemented
 
+  try {
+    // Get post
+    const post = await Post.findById(postId);
 
-// Unfavorite a post
+    if (!post) {
+      return res.status(404).json({ msg: 'Post not found' });
+    }
+
+    // Call instance method 
+    post.toggleFavorite(userId);
+
+    // Save updated post to DB
+    await post.save();
+
+    res.status(200).json({ post }); // Returns whole post
+  } catch (err) {
+    res.status(400).json({ error: err.message });
+  }
+};

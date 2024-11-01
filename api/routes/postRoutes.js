@@ -28,14 +28,7 @@ router.get('/:postId/interactions', postController.getInteractionsById);
 // Vote on a post
 router.patch('/:postId/vote', postController.vote);
 
-// Favorite a post
-router.patch('/:postId/favorite', (req, res) => {
-  res.json({ msg: 'Favorite a post' });
-});
-
-// Unfavorite a post
-router.patch('/:postId/unfavorite', (req, res) => {
-  res.json({ msg: 'Unfavorite a post' });
-});
+// Favorite/Unfavorite a post
+router.patch('/:postId/favorite', postController.favorite);
 
 export default router;

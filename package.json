@@ -1,0 +1,23 @@
+{
+  "name": "liquids",
+  "version": "1.0.0",
+  "description": "**Liquids** is a social media app for sharing tasty beverage recipes and reviews.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "lint": "eslint",
+    "lint:fix": "eslint . --ext .js,.jsx,.mjs --fix",
+    "format": "prettier --write \"**/*.{js,jsx,mjs,json,md,html,css}\""
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "@eslint/js": "^9.13.0",
+    "eslint": "^9.13.0",
+    "eslint-config-prettier": "^9.1.0",
+    "eslint-plugin-react": "^7.37.2",
+    "globals": "^15.11.0",
+    "prettier": "^3.3.3"
+  }
+}
